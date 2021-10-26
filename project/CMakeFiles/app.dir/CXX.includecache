@@ -11,6 +11,10 @@ iostream
 -
 algorithm
 -
+typeinfo
+-
 string.h
+-
+string
 -
 
