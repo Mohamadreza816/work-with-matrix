@@ -18,6 +18,7 @@ bool delete_matrix(string command, struct store *mat);
 bool change(string command, struct store *mat);
 int tyid(string command);
 bool change(string command, struct store *mat);
+bool exit(struct store *mat);
 //---------------------------------------------
 
 //store for store 2d array
@@ -125,7 +126,7 @@ int add_matrix(string command, struct store *mat)
         row = row * 10 + (command[pos] - 48); // convert string to number
     }
     int pos1 = pos; //make a copy for use in switch case
-    int check = 0;
+    int check = 0; // add matrix first 2
     while (command[pos] != '\0')
     {
         if (isdigit(command[pos]))
@@ -156,7 +157,7 @@ int add_matrix(string command, struct store *mat)
         mat[num].row = row;
         mat[num].column = column;
         cout << "Enter a number for"
-             << " row: " << 1 << " column: " << 1 << " ---> ";
+             << " row: " << 1 << " column: " << 1 << " ---> ";//get first home of array
         string temp; //use recognize datatype of array
         cin >> temp;
         mat[num].typy = tyid(temp); //recognize data type
@@ -180,7 +181,7 @@ int add_matrix(string command, struct store *mat)
                 {
                     j = 0;
                 }
-                for (; j < column; j++)
+                for (j; j < column; j++)
                 {
                     cout << "Enter a number for"
                          << " row: " << i + 1 << " column: " << j + 1 << " ---> ";
@@ -283,7 +284,7 @@ int add_matrix(string command, struct store *mat)
         mat[num].row = row;
         mat[num].column = column;
         cout << "Enter a number for"
-             << " row: " << 0 << " column: " << 0 << " ---> ";
+             << " row: " << 1 << " column: " << 1 << " ---> ";//get first home of array
         string temp; //use recognize datatype of array
         cin >> temp;
         mat[num].typy = tyid(temp);
@@ -307,7 +308,7 @@ int add_matrix(string command, struct store *mat)
                 {
                     j = 0;
                 }
-                for (; j < column; j++)
+                for (j; j < column; j++)
                 {
                     cout << "Enter a number for"
                          << " row: " << i + 1 << " column: " << j + 1 << " ---> ";
@@ -413,7 +414,6 @@ int add_matrix(string command, struct store *mat)
         {
             int num3 = 0;           //use for convert string to number
             int fake[row * column]; // temp array for store number of array
-            cout << command << endl;
             int k = 0; // use in temp array
             int i = 0; //a var for while loop
             while (command[i] != ']')
@@ -490,7 +490,6 @@ int add_matrix(string command, struct store *mat)
         if (mat[num].typy == 4)
         {
             string fake[row * column]; // temp array for store number of array
-            cout << command << endl;
             int k = 0; // use in temp array
             int i = 0; //a var for while loop
             int j = 0;
@@ -528,7 +527,6 @@ int add_matrix(string command, struct store *mat)
         {
             char num3;               //use for convert string to number
             char fake[row * column]; // temp array for store number of array
-            cout << command << endl;
             int k = 0; // use in temp array
             int i = 0; //a var for while loop
             int j = 0;
@@ -582,7 +580,6 @@ int add_matrix(string command, struct store *mat)
         {
             int num3 = 0;           //use for convert string to number
             int fake[row * column]; // temp array for store number of array
-            cout << command << endl;
             int k = 0; // use in temp array
             int i = 0; //a var for while loop
             while (command[i] != ']')
@@ -792,11 +789,7 @@ bool command(string command, struct store *a_mat)
         delete_matrix(command, a_mat);
         return true;
     }
-    if (command.substr(0, 4) == "exit")
-    {
-        /* code */
-    }
-
+    
     cout << "Error...input command is invalid!!" << endl;
     return false;
 }
@@ -1363,7 +1356,7 @@ bool is_symmetrick(string command, struct store *mat)
 {
     int pos = command.find(' ');
     string temp = command.substr(0, pos);
-    command = command.substr(pos + 1);
+    command = command.substr(pos + 1);//seprate matrix name from command
     int check{-1};
     for (size_t i = 0; i <= num; i++)
     {
@@ -1382,9 +1375,9 @@ bool is_symmetrick(string command, struct store *mat)
         cout << "The matrix isn't symmetric‬‬k!!!" << endl;
         return false;
     }
-    int c = 1;
-    int flag = 0;
-    int flag2 = 0;
+    int c = 1;//a extra condition for loop 
+    int flag = 0;//use for normal symmetric
+    int flag2 = 0;//use for skew symmetric
     switch (mat[check].typy)
     {
     case 1: // int array
@@ -1528,7 +1521,6 @@ bool is_symmetrick(string command, struct store *mat)
                     }
                     else
                     {
-                        cout << "in first loop" << endl;
                         flag = 0;
                         c = 0;
                     }
@@ -1543,7 +1535,6 @@ bool is_symmetrick(string command, struct store *mat)
                 if (i != j)
                 {
                     reverse(mat[check].arrs[j][i].begin(), mat[check].arrs[j][i].end());
-                    cout << mat[check].arrs[j][i] << endl;
                     if (mat[check].arrs[j][i] == mat[check].arrs[i][j])
                     {
                         flag2 = 1;
@@ -1560,18 +1551,27 @@ bool is_symmetrick(string command, struct store *mat)
         break;
     }
     }
-    if (temp == "is_normal_symmetric‬‬" && flag == 1)
+    if (temp == "is_normal_symmetric" && flag == 1)
     {
-        cout << "The matrix is normal symmetric‬‬k" << endl;
+        cout << mat[check].name<< " is normal symmetric" << endl;
         return true;
     }
-
-    if (temp == "is_skew_symmetric‬‬" && flag2 == 1)
+    if (temp == "is_normal_symmetric" && flag == 0)
     {
-        cout << "The matrix is skew symmetric‬‬k" << endl;
+        cout << mat[check].name<< " isn't normal symmetric" << endl;
+        return false;
+    }
+    if (temp == "is_skew_symmetric" && flag2 == 1)
+    {
+        cout<< mat[check].name << " is skew symmetric" << endl;
         return true;
     }
-    if ("is_symmetric‬")
+    if (temp == "is_skew_symmetric" && flag2 == 0)
+    {
+        cout<< mat[check].name << " isn't skew symmetric" << endl;
+        return false;
+    }
+    if (temp == "is_symmetric")
     {
         if (flag == 1 && flag2 == 1)
         {
@@ -1580,17 +1580,16 @@ bool is_symmetrick(string command, struct store *mat)
         }
         if (flag == 1)
         {
-            cout << "The matrix is normal symmetric‬‬k" << endl;
+            cout<< mat[check].name << " is normal symmetric" << endl;
             return true;
         }
         if (flag2 == 1)
         {
-            cout << "The matrix is skew symmetric‬‬k" << endl;
+            cout<< mat[check].name << " is skew symmetric" << endl;
             return true;
         }
     }
-    cout << mat[check].name << " isn't normal symmetric(also skew symmetric)" << endl;
-    return false;
+    return true;
 }
 //end of is_symmetrick function
 /*******************************************************************/
@@ -1604,14 +1603,14 @@ bool inverse(string command, struct store *mat)
     {
         if (command[i] == ' ')
         {
-            check = 1;
+            check = 1;// must add a new matrix
             break;
         }
         i++;
     }
     string temp;
     int flag = -1;
-    if (check == 0)
+    if (check == 0)//inverse in matrix
     {
         for (size_t i = 0; i < num; i++)
         {
@@ -1686,13 +1685,11 @@ bool inverse(string command, struct store *mat)
 
         return true;
     }
-    if (check == 1)
+    if (check == 1)//add a new matrix
     {
-        cout << command << endl;
         int pos = command.find(' ');
         temp = command.substr(0, pos);
         command = command.substr(pos + 1);
-
         for (size_t i = 0; i < num; i++)
         {
             if (mat[i].name == temp)
@@ -1711,7 +1708,6 @@ bool inverse(string command, struct store *mat)
             return false;
         }
         mat[num].name = command; // add matrix
-        cout << "here" << endl;
         switch (mat[flag].typy)
         {
         case 1: //int array
@@ -1979,7 +1975,6 @@ bool change(string command, struct store *mat)
             check = i;
         }
     }
-    cout << check << endl;
 
     if (check == -1)
     {
@@ -2154,5 +2149,6 @@ bool exit(struct store *mat)
             break;
         }
     }
+    return true;
 }
 //end of exit function
