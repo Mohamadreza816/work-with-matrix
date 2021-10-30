@@ -6,15 +6,21 @@
 
 #IncludeRegexTransform: 
 
+/home/mohamadreza/Desktop/work-with-matrix/project/function.h
+iostream
+-
+iomanip
+-
+
 /home/mohamadreza/Desktop/work-with-matrix/project/main.cpp
 iostream
 -
 algorithm
 -
-typeinfo
--
 string.h
 -
 string
 -
+function.h
+/home/mohamadreza/Desktop/work-with-matrix/project/function.h
 
